@@ -3,23 +3,25 @@
 // (powered by FernFlower decompiler)
 //
 
-package com.servlet.register;
+package com.template.repository;
+
+import com.template.model.Emp;
 
 import java.util.ArrayList;
 
-public class EmployeeControl {
+public class EmployeeRepository {
     private ArrayList<Emp> e = new ArrayList();
-    private static EmployeeControl emp;
+    private static EmployeeRepository emp;
 
-    private EmployeeControl() {
+    private EmployeeRepository() {
     }
 
-    public static EmployeeControl getInstance() {
+    public static EmployeeRepository getInstance() {
         if (emp == null) {
-            Class var0 = EmployeeControl.class;
-            synchronized(EmployeeControl.class) {
+            Class var0 = EmployeeRepository.class;
+            synchronized(EmployeeRepository.class) {
                 if (emp == null) {
-                    emp = new EmployeeControl();
+                    emp = new EmployeeRepository();
                 }
             }
         }

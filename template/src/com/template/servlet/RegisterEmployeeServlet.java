@@ -3,8 +3,9 @@
 // (powered by FernFlower decompiler)
 //
 
-package com.servlet.register;
+package com.template.servlet;
 
+import com.template.repository.EmployeeRepository;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -15,10 +16,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @WebServlet({"/Register"})
-public class Servletregister extends HttpServlet {
-    private EmployeeControl emp = EmployeeControl.getInstance();
+public class RegisterEmployeeServlet extends HttpServlet {
+    private EmployeeRepository emp = EmployeeRepository.getInstance();
 
-    public Servletregister() {
+    public RegisterEmployeeServlet() {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

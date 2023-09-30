@@ -3,7 +3,7 @@
 // (powered by FernFlower decompiler)
 //
 
-package com.servlet.register;
+package com.template.model;
 
 public class Emp {
     private String name;

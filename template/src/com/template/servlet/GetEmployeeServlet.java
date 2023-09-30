@@ -3,8 +3,10 @@
 // (powered by FernFlower decompiler)
 //
 
-package com.servlet.register;
+package com.template.servlet;
 
+import com.template.model.Emp;
+import com.template.repository.EmployeeRepository;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -14,11 +16,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet({"/GetEmployee"})
-public class ServletEmployee extends HttpServlet {
-    private EmployeeControl emp = EmployeeControl.getInstance();
+public class GetEmployeeServlet extends HttpServlet {
+    private EmployeeRepository emp = EmployeeRepository.getInstance();
     private static final long serialVersionUID = 1L;
 
-    public ServletEmployee() {
+    public GetEmployeeServlet() {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
