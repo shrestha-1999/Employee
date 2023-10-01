@@ -5,7 +5,7 @@
 
 package com.template.servlet;
 
-import com.template.model.Emp;
+import com.template.model.Employee;
 import com.template.repository.EmployeeRepository;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -17,15 +17,16 @@ import java.io.IOException;
 
 @WebServlet({"/GetEmployee"})
 public class GetEmployeeServlet extends HttpServlet {
-    private EmployeeRepository emp = EmployeeRepository.getInstance();
+    private EmployeeRepository emp;
     private static final long serialVersionUID = 1L;
 
     public GetEmployeeServlet() {
+        emp = EmployeeRepository.getInstance();
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
-        Emp employee = this.emp.getEmployeeById(id);
+        Employee employee = emp.getEmployeeById(id);
         if (employee != null) {
             String name = employee.getName();
             int age = employee.getAge();

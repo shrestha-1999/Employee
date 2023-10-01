@@ -17,9 +17,10 @@ import java.io.PrintWriter;
 
 @WebServlet({"/Register"})
 public class RegisterEmployeeServlet extends HttpServlet {
-    private EmployeeRepository emp = EmployeeRepository.getInstance();
+    private EmployeeRepository emp;
 
     public RegisterEmployeeServlet() {
+       emp = EmployeeRepository.getInstance();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -27,8 +28,8 @@ public class RegisterEmployeeServlet extends HttpServlet {
         response.setContentType("text/html");
         String name = request.getParameter("n1");
         int age = Integer.parseInt(request.getParameter("a1"));
-        this.emp.addEmployee(name, age);
-        int id = this.emp.getEmployeeId(name, age);
+        emp.addEmployee(name, age);
+        int id = emp.getEmployeeId(name, age);
         request.setAttribute("id", id);
         RequestDispatcher dispatcher = request.getRequestDispatcher("result.jsp");
         dispatcher.forward(request, response);
