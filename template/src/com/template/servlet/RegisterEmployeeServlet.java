@@ -17,10 +17,11 @@ import java.io.PrintWriter;
 
 @WebServlet({"/Register"})
 public class RegisterEmployeeServlet extends HttpServlet {
-    private EmployeeRepository emp;
+    private final EmployeeRepository employeeRepository;
 
-    public RegisterEmployeeServlet() {
-       emp = EmployeeRepository.getInstance();
+    public RegisterEmployeeServlet() throws ClassNotFoundException {
+
+        employeeRepository = new EmployeeRepository();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -28,10 +29,17 @@ public class RegisterEmployeeServlet extends HttpServlet {
         response.setContentType("text/html");
         String name = request.getParameter("n1");
         int age = Integer.parseInt(request.getParameter("a1"));
-        emp.addEmployee(name, age);
-        int id = emp.getEmployeeId(name, age);
-        request.setAttribute("id", id);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("result.jsp");
-        dispatcher.forward(request, response);
+        int generatedId = employeeRepository.addEmployee(name, age);
+
+        if (generatedId != -1) {
+            // Redirect to the RetrieveEmployeeServlet with the generated ID as a query parameter
+            request.setAttribute("id", generatedId);
+            RequestDispatcher dispatcher = request.getRequestDispatcher("result.jsp");
+            dispatcher.forward(request, response);
+        } else {
+            response.getWriter().println("Failed to add employee.");
+        }
+
     }
 }
+

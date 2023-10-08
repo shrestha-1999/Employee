@@ -7,50 +7,62 @@ package com.template.repository;
 
 import com.template.model.Employee;
 
+
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
+
 
 public class EmployeeRepository {
-    private ArrayList<Employee> employees;
-
     private static EmployeeRepository emp;
 
-    private EmployeeRepository() {
-
-        employees = new ArrayList<>();
+    public EmployeeRepository() throws ClassNotFoundException {
+        // Constructor (you can also set up the JDBC connection here if needed)
+        Class.forName("com.mysql.cj.jdbc.Driver");
     }
 
-
-    public static EmployeeRepository getInstance() {
-        if (emp == null) {
-            synchronized (EmployeeRepository.class) {
-                if (emp == null) {
-                    emp = new EmployeeRepository();
+    public int addEmployee(String name, int age) {
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/employee", "root", "Root@99")) {
+            connection.setAutoCommit(true);
+            System.out.println("obtained connection");
+            String sql = "INSERT INTO employee_db (name, age) VALUES (?, ?)";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                preparedStatement.setString(1, name);
+                preparedStatement.setInt(2, age);
+                preparedStatement.executeUpdate();
+                ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
                 }
             }
-        }
 
-        return emp;
-    }
+        } catch (Exception e) {
+            e.printStackTrace(); // Handle the exception appropriately
 
-    public void addEmployee(String name, int age) {
-        Employee e1 = new Employee(name, age);
-        this.employees.add(e1);
-    }
-    public int getEmployeeId(String name, int age) {
-        for (int i = 0; i < employees.size(); i++) {
-            Employee employee = employees.get(i);
-            if (employee.getName().equals(name) && employee.getAge() == age) {
-                return i; // Index of the employee in the ArrayList
-            }
         }
         return -1;
     }
 
-
     public Employee getEmployeeById(int id) {
-        if (id >= 0 && id < employees.size()) {
-            return employees.get(id);
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/employee", "root", "Root@99");
+             PreparedStatement ps = conn.prepareStatement("SELECT * FROM employee_db WHERE id = ?")) {
+
+            ps.setInt(1, id);
+
+            ResultSet resultSet = ps.executeQuery();
+            if (resultSet.next()) {
+                String name = resultSet.getString("name");
+                int age = resultSet.getInt("age");
+                return new Employee(name, age, id);
+            }
+
+        } catch (Exception e) {
+            System.out.println();
         }
-        return null; // Employee not found
+
+        return null;
     }
+
+
+
 }
