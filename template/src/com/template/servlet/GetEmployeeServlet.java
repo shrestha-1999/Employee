@@ -20,13 +20,18 @@ public class GetEmployeeServlet extends HttpServlet {
     private EmployeeRepository emp;
     private static final long serialVersionUID = 1L;
 
-    public GetEmployeeServlet() {
-        emp = EmployeeRepository.getInstance();
+    public GetEmployeeServlet() throws ClassNotFoundException {
+        emp = new EmployeeRepository();
     }
 
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         int id = Integer.parseInt(request.getParameter("id"));
-        Employee employee = emp.getEmployeeById(id);
+
+            // Retrieve the employee with the maximum ID from the database
+            Employee employee = emp.getEmployeeById(id);
+
         if (employee != null) {
             String name = employee.getName();
             int age = employee.getAge();
@@ -37,6 +42,6 @@ public class GetEmployeeServlet extends HttpServlet {
         } else {
             response.getWriter().println("Employee not found.");
         }
-
+        }
     }
-}
+
